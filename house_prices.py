@@ -19,7 +19,7 @@ import time
 import requests
 from bs4 import BeautifulSoup
 
-CHROME_DRIVE_PATH = "C:/Users/Anna/Development/chromedriver.exe"
+CHROME_DRIVE_PATH = DEFINE_PATH
 web_side_address = "https://www.otodom.pl/"
 
 houses_list_url = "https://www.otodom.pl/sprzedaz/dom/dolnoslaskie/?search%5Bregion_id%5D=1"
@@ -72,11 +72,27 @@ houses = response.text
 houses_list = BeautifulSoup(houses, "html.parser")
 house = houses_list.find_all(name="article")
 
+form = webdriver.Chrome(CHROME_DRIVE_PATH)
+form.get(form_link)
+
 for home in house:
-    print(home.find(name="p", class_="text-nowrap").getText())
-    print(home.find(name="li", class_="offer-item-price").getText().strip())
-    print(home.find(name="li", class_="hidden-xs offer-item-area").getText())
-    print(home.find(name="a").get("href"))
+    question_1 = form.find_element_by_xpath("//*[@id='mG61Hd']/div[2]/div/div[2]/div[1]/div/div/div[2]/div/div[1]/div/div[1]/input")
+    question_1.send_keys(home.find(name="p", class_="text-nowrap").getText())
+
+    question_2 = form.find_element_by_xpath("//*[@id='mG61Hd']/div[2]/div/div[2]/div[2]/div/div/div[2]/div/div[1]/div/div[1]/input")
+    question_2.send_keys(home.find(name="li", class_="offer-item-price").getText().strip())
+
+    question_3 = form.find_element_by_xpath("//*[@id='mG61Hd']/div[2]/div/div[2]/div[3]/div/div/div[2]/div/div[1]/div/div[1]/input")
+    question_3.send_keys(home.find(name="li", class_="hidden-xs offer-item-area").getText())
+
+    question_4 = form.find_element_by_xpath("//*[@id='mG61Hd']/div[2]/div/div[2]/div[4]/div/div/div[2]/div/div[1]/div/div[1]/input")
+    question_4.send_keys(home.find(name="a").get("href"))
+
+    submit_button = form.find_element_by_xpath("/html/body/div/div[2]/form/div[2]/div/div[3]/div[1]/div/div/span/span").click()
+    add_new_record = form.find_element_by_xpath("/html/body/div[1]/div[2]/div[1]/div/div[4]/a").click()
+
+form.close()
+page.close()
 
 
 
@@ -84,5 +100,6 @@ for home in house:
 
 
 
-# TODO 4: update information in form_link.
+
+
 
