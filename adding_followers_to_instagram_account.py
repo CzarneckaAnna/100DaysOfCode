@@ -56,11 +56,17 @@ class InstaFollower:
 		waiting = wait.until(EC.presence_of_all_elements_located((By.XPATH, "/html/body/div[5]/div/div/div[2]")))
         lists = followers.find_element_by_xpath("/html/body/div[5]/div/div/div[2]")
 
-        for i in range(10):
+        for i in range(3):
             selected_page.execute_script("arguments[0].scrollTop = arguments[0].scrollHeight", lists)
 
     def follow(self):
-        pass
+        all_buttons = self.driver.find_elements_by_css_selector("li button")
+        for button in all_buttons:
+            if button.text == "Obserwuj":
+                button.click()
+                time.sleep(2)
+            else:
+                pass																			
 
 
 inst_page = InstaFollower()
