@@ -28,7 +28,7 @@ class InstaFollower:
         # cookies accept
         cookies = page.find_element_by_xpath("/html/body/div[2]/div/div/button[1]").click()
 
-        waiting_1
+        time.sleep(2)
         # login to instagram
         login = page.find_element_by_name("username")
         password = page.find_element_by_name("password")
@@ -48,13 +48,16 @@ class InstaFollower:
     def find_followers(self):
         selected_page = self.driver
         selected_page.get(f"https://www.instagram.com/{SIMILAR_ACCOUNT}")
+		        wait = WebDriverWait(selected_page, 10)
 
+        followers = selected_page.find_element_by_xpath("/html/body/div[1]/section/main/div/header/section/ul/li[2]/a")
+        followers.click()									   
 
-        # wait = WebDriverWait(selected_page, 10)
-        #
-        # waiting_4 = wait.until(EC.presence_of_all_elements_located((By.XPATH, "//*[@id='react-root']/section/main/div/ul/li[2]")))
+		waiting = wait.until(EC.presence_of_all_elements_located((By.XPATH, "/html/body/div[5]/div/div/div[2]")))
+        lists = followers.find_element_by_xpath("/html/body/div[5]/div/div/div[2]")
 
-            #followers = selected_page.find_element_by_xpath("/html/body/div[1]/section/main/div/header/section/ul/li[2]/a").click()
+        for i in range(10):
+            selected_page.execute_script("arguments[0].scrollTop = arguments[0].scrollHeight", lists)
 
     def follow(self):
         pass
